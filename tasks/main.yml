@@ -1,7 +1,7 @@
 ---
 - name: httpd is installed
   package:
-    name: httpd24
+    name: "{{ apache.package }}"
     state: installed
 
 - name: storage is managed, i.e. lvm, filesystems
