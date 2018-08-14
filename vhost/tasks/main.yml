@@ -35,7 +35,8 @@
 - name: virtual host {{ servername }} is configured
   template:
     src: "{{ item }}"
-    dest: /opt/rh/httpd24/root/etc/httpd/conf.vhosts.d/{{ prefix }}{{ servername }}.conf
+    dest: /opt/rh/httpd24/root/etc/httpd/conf.vhosts.d/{{ prefix|default('') }}{{ servername }}.conf
+    backup: true
   with_first_found:
     - "{{ playbook_dir }}/templates/{{ vhost_cfg }}"  
     - vhost.conf.j2
