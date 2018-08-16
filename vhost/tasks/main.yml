@@ -4,8 +4,6 @@
   file:
     path: /var/www/{{ php_pool }}/{{ apache.documentroot }}
     state: directory
-    owner: "{{ login }}"
-    group: "{{ group }}"
 
 - name: tmp dir for {{ servername }}
   file:
