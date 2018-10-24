@@ -12,11 +12,18 @@
     state: started
     enabled: true
 
-- name: symlink into /etc/opt/rh
+- name: symlink into /etc/profile.d
+  when: apache_scl_enabled == true
   file:
     src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/enable"
     dest: /etc/profile.d/{{ apache_scl_prefix }}.sh
     state: link
+
+- name: symlink into /etc/profile.d
+  when: apache_scl_enabled != true
+  file:
+    path: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    state: absent
 
 - name: symlink into /etc/opt/rh
   when: apache_scl_prefix is defined
