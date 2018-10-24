@@ -2,5 +2,6 @@
 ---
 
 apache:
-  httpd: httpd
+  package: "{{ apache_scl_prefix + '-httpd' if apache_scl_prefix is defined else 'httpd' }}"
+  service: "{{ apache_scl_prefix + '-httpd' if apache_scl_prefix is defined else 'httpd' }}"
 

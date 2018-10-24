@@ -1,5 +1,0 @@
----
-
-manage_storage: no
-apache:
-  package: httpd24

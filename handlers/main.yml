@@ -1,6 +1,18 @@
 ---
 
+- name: restart apache
+  service:
+    name: "{{ apache.service }}"
+    state: restarted
+
 - name: reload apache
   service:
-    name: httpd24-httpd
+    name: "{{ apache.service }}"
     state: reloaded
+
+- name: symlink into /etc/profile.d
+  file:
+    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/enable"
+    dest: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    state: link
+

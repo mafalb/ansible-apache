@@ -1,0 +1,11 @@
+# vim: ft=yaml ts=2:
+---
+
+- name: set OS specific variables
+  include_vars:
+    file: "{{ ansible_os_family }}.yml"
+
+- debug: var=apache
+  tags:
+    - never
+    - debug

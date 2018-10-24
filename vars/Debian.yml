@@ -2,5 +2,6 @@
 ---
 
 apache:
-  httpd: apache2
+  package: apache2
+  service: apache2
 

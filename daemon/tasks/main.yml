@@ -1,0 +1,26 @@
+# vim: set ft=yaml ts=2:
+---
+
+- name: httpd does exist
+  package:
+    name: "{{ apache.package }}"
+    state: installed
+
+- name: apache is running
+  service:
+    name: "{{ apache.service }}"
+    state: started
+    enabled: true
+
+- name: symlink into /etc/opt/rh
+  file:
+    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/enable"
+    dest: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    state: link
+
+- name: symlink into /etc/opt/rh
+  when: apache_scl_prefix is defined
+  file:
+    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/root/etc/httpd"
+    dest: /etc/opt/rh/{{ apache_scl_prefix }}
+    state: link
