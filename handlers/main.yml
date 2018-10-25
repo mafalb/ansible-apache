@@ -11,8 +11,11 @@
     state: reloaded
 
 - name: symlink into /etc/profile.d
+  when:
+    - apache.scl.name is defined
+    - apache.scl.enabled is defined
   file:
-    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/enable"
-    dest: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    src: /opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/enable
+    dest: /etc/profile.d/{{ apache.scl.name }}.sh
     state: link
 

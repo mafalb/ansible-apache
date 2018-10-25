@@ -13,21 +13,21 @@
     enabled: true
 
 - name: symlink into /etc/profile.d
-  when: apache_scl_enabled == true
+  when: apache.scl.enabled == true
   file:
-    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/enable"
-    dest: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    src: "/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/enable"
+    dest: /etc/profile.d/{{ apache.scl.name }}.sh
     state: link
 
 - name: symlink into /etc/profile.d
-  when: apache_scl_enabled != true
+  when: apache.scl.enabled == false
   file:
-    path: /etc/profile.d/{{ apache_scl_prefix }}.sh
+    path: /etc/profile.d/{{ apache.scl.name }}.sh
     state: absent
 
-- name: symlink into /etc/opt/rh
-  when: apache_scl_prefix is defined
+- name: symlink into /etc/opt/{{ apache.scl.prefix }}
+  when: apache.scl.name is defined
   file:
-    src: "{{ scl_path_prefix }}/{{ apache_scl_prefix }}/root/etc/httpd"
-    dest: /etc/opt/rh/{{ apache_scl_prefix }}
+    path: /etc/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}
+    src: /opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/root/etc/httpd/
     state: link

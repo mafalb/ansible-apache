@@ -1,7 +1,11 @@
 # vim: ft=yaml ts=2:
 ---
 
-apache:
-  package: "{{ apache_scl_prefix + '-httpd' if apache_scl_prefix is defined else 'httpd' }}"
-  service: "{{ apache_scl_prefix + '-httpd' if apache_scl_prefix is defined else 'httpd' }}"
+_apache_scl_tmpvar: &apache_scl_tmpvar "{{ apache_scl_name is defined|ternary( apache_scl_name|default('') + '-httpd', 'httpd') }}"
 
+apache:
+  service: *apache_scl_tmpvar
+  package: *apache_scl_tmpvar
+  scl:
+    name: "{{ apache_scl_name }}"
+    enabled: "{{ apache_scl_enabled }}"
