@@ -4,7 +4,8 @@
 _apache_scl_tmpvar: &apache_scl_tmpvar "{{ apache_scl_name is defined|ternary( apache_scl_name|default('') + '-httpd', 'httpd') }}"
 
 apache:
-  service: *apache_scl_tmpvar
+  service:
+    name: *apache_scl_tmpvar
   package: *apache_scl_tmpvar
   scl:
     name: "{{ apache_scl_name|default(false) }}"

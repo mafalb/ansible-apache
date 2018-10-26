@@ -1,12 +1,22 @@
+# vim: set ft=yaml ts=2:
 ---
 
 - name: restart apache
   when: apache.service.managed
   service:
-    name: "{{ apache.service }}"
+    name: "{{ apache.service.name }}"
     state: restarted
 
+- name: check for pidfile
+  when: not apache.service.managed
+  stat:
+    path: "{{ apache.service.pidfile }}"
+  register: _apache_service_pidfile
+  listen:
+    - reload apache
+
 - name: reload apache
+  when: apache.service.managed or _apache_service_pidfile.stat.exists
   service:
-    name: "{{ apache.service }}"
+    name: "{{ apache.service.name }}"
     state: reloaded

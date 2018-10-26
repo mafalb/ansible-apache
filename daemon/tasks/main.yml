@@ -9,7 +9,7 @@
 - name: "{{ apache.service }} is running"
   when: apache.service.managed
   service:
-    name: "{{ apache.service }}"
+    name: "{{ apache.service.name }}"
     state: started
     enabled: true
 
