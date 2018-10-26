@@ -17,21 +17,13 @@ RUN  yum -y install epel-release \
 && yum install -y python-setuptools python-pip systemd \
 && rm -rf /var/cache/yum/*
 
-RUN pip install wheel && pip install ansible && pip install ansible-lint
-
-RUN  mkdir -p /etc/ansible\
-&& echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
-
-RUN  yum -y install epel-release \
-  && yum install -y python-setuptools python-pip systemd \
-  && rm -rf /var/cache/yum/*
-
 RUN pip install wheel \
 && pip install ansible \
 && pip install ansible-lint \
 && rm -fr /root/.cache/pip/
 
-RUN mkdir -p /etc/ansible && echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+RUN mkdir -p /etc/ansible \
+&& echo -e "[local]\nlocalhost ansible_connection=local\n" > /etc/ansible/hosts
 
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
