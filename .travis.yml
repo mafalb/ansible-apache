@@ -24,14 +24,10 @@ install:
   - sudo docker ps
 
 script:
-  - sudo docker exec "$(cat ${container_id})" cat /etc/ansible/hosts
-  - sudo docker exec "$(cat ${container_id})" cat /etc/ansible/ansible.cfg
-  - sudo docker exec "$(cat ${container_id})" ansible-inventory --list
-  - sudo docker exec "$(cat ${container_id})" ansible-inventory --list -i /etc/ansible/hosts
-  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -vv /etc/ansible/roles/apache/tests/apache_local.yml --syntax-check -i /etc/ansible/hosts
-  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -vv /etc/ansible/roles/apache/tests/apache_local.yml --syntax-check
+  - sudo docker exec "$(cat ${container_id})" ansible localhost -m setup
+  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook /etc/ansible/roles/apache/tests/apache_local.yml --syntax-check -t all,debug
   - sudo docker exec "$(cat ${container_id})" ansible-lint --force-color -v /etc/ansible/roles/apache/tests/apache_local.yml
-  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml
+  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook /etc/ansible/roles/apache/tests/apache_local.yml -t all,debug
   - >
     sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml
     | grep -q 'changed=0.*failed=0'
