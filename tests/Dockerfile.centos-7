@@ -26,8 +26,8 @@ RUN mkdir -p /etc/ansible \
 && echo -e "localhost ansible_connection=local\n" > /etc/ansible/hosts \
 && echo -e "[defaults]\nhash_behaviour = merge\nstdout_callback = yaml" >/etc/ansible/ansible.cfg
 
-RUN echo /etc/ansible/hosts
-RUN echo /etc/ansible/ansible.cfg
+RUN cat /etc/ansible/hosts
+RUN cat /etc/ansible/ansible.cfg
 
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
