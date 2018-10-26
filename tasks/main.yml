@@ -14,8 +14,4 @@
   tags:
     - never
     - debug
-
-- debug: var=hostvars[inventory_hostname]
-  tags:
-    - never
-    - debug
+...
