@@ -25,10 +25,10 @@ install:
 
 script:
   - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml --syntax-check
-  - sudo docker exec "$(cat ${container_id})" ansible-lint --force-color -v /etc/ansible/roles/apache/tests/apache.yml
-  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache.yml
+  - sudo docker exec "$(cat ${container_id})" ansible-lint --force-color -v /etc/ansible/roles/apache/tests/apache_local.yml
+  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml
   - >
-    sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache.yml
+    sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
