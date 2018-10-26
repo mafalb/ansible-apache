@@ -1,32 +1,37 @@
 # vim: set ft=yaml ts=2:
 ---
 
-- name: httpd does exist
+- name: "{{ apache.package }} does exist"
   package:
     name: "{{ apache.package }}"
     state: installed
 
-- name: apache is running
+- name: "{{ apache.service }} is running"
+  when: apache.service.managed
   service:
     name: "{{ apache.service }}"
     state: started
     enabled: true
 
 - name: symlink into /etc/profile.d
-  when: apache.scl.enabled == true
+  when:
+    - apache.scl.name
+    - apache.scl.enabled == true
   file:
     src: "/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/enable"
     dest: /etc/profile.d/{{ apache.scl.name }}.sh
     state: link
 
 - name: symlink into /etc/profile.d
-  when: apache.scl.enabled == false
+  when:
+    - apache.scl.name
+    - apache.scl.enabled == false
   file:
     path: /etc/profile.d/{{ apache.scl.name }}.sh
     state: absent
 
 - name: symlink into /etc/opt/{{ apache.scl.prefix }}
-  when: apache.scl.name is defined
+  when: apache.scl.name
   file:
     path: /etc/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}
     src: /opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/root/etc/httpd/

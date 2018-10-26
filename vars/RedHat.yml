@@ -7,5 +7,5 @@ apache:
   service: *apache_scl_tmpvar
   package: *apache_scl_tmpvar
   scl:
-    name: "{{ apache_scl_name }}"
-    enabled: "{{ apache_scl_enabled }}"
+    name: "{{ apache_scl_name|default(false) }}"
+    enabled: "{{ apache_scl_enabled|default(false) }}"

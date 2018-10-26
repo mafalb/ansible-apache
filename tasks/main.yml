@@ -10,12 +10,12 @@
   include_vars:
     file: "{{ ansible_os_family }}.yml"
 
-- debug: var=apache
-  tags:
-    - never
-    - debug
+- name: assertions
+  assert:
+    that:
+      - apache is defined
 
-- debug: var=hostvars[inventory_hostname]
+- debug: var=apache
   tags:
     - never
     - debug

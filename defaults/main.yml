@@ -2,6 +2,8 @@
 ---
 
 apache:
+  service:
+    managed: " apache_service_managed|default(true) }}"
   scl:
     prefix: "{{ apache_scl_prefix|default('rh') }}"
     enabled: false

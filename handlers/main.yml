@@ -1,6 +1,7 @@
 ---
 
 - name: restart apache
+  when: apache.service.managed
   service:
     name: "{{ apache.service }}"
     state: restarted
@@ -9,13 +10,3 @@
   service:
     name: "{{ apache.service }}"
     state: reloaded
-
-- name: symlink into /etc/profile.d
-  when:
-    - apache.scl.name is defined
-    - apache.scl.enabled is defined
-  file:
-    src: /opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/enable
-    dest: /etc/profile.d/{{ apache.scl.name }}.sh
-    state: link
-
