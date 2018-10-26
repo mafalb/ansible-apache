@@ -23,8 +23,8 @@ RUN pip install wheel \
 && rm -fr /root/.cache/pip/
 
 RUN mkdir -p /etc/ansible \
-&& echo -e "localhost ansible_connection=local\n" > /etc/ansible/hosts \
-&& echo -e "[defaults]\nhash_behaviour = merge\nstdout_callback = yaml" >/etc/ansible/ansible.cfg
+&& echo -e "localhost ansible_connection=local\ngugu ansible_connection=local\n" > /etc/ansible/hosts \
+&& echo -e "[defaults]\nhash_behaviour = merge\nstdout_callback = yaml\n" >/etc/ansible/ansible.cfg
 
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
