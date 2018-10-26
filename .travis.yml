@@ -1,0 +1,34 @@
+# vim: set ft=yaml ts=2:
+---
+
+sudo: required
+language: minimal
+services:
+  - docker
+
+env:
+  - distribution: centos
+    version: 7
+
+before_install:
+  - container_id=$(mktemp)
+  - sudo docker pull ${distribution}:${version}
+  - sudo docker build --no-cache --rm --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests
+  - pwd
+  - hostname
+
+install:
+  - sudo docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/apache:ro ${distribution}-${version}:ansible > ${container_id}
+  - echo ${container_id}
+  - cat ${container_id}
+  - sudo docker ps
+
+script:
+  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache_local.yml --syntax-check
+  - sudo docker exec "$(cat ${container_id})" ansible-lint --force-color -v /etc/ansible/roles/apache/tests/apache.yml
+  - sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache.yml
+  - >
+    sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/apache/tests/apache.yml
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)

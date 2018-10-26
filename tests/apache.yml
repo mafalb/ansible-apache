@@ -1,0 +1,8 @@
+# vim: set ft=yaml ts=2:
+---
+
+- hosts: centos1
+  roles:
+    - role: apache/daemon
+
+...
