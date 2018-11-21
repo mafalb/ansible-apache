@@ -25,6 +25,12 @@
     path: /etc/profile.d/{{ apache.scl.name }}.sh
     state: absent
 
+- name: directory in /etc/opt does exist
+  when: apache.scl.name is defined
+  file:
+    path: /etc/opt/{{ apache.scl.prefix }}
+    state: directory
+
 - name: symlink into /etc/opt/{{ apache.scl.prefix }}
   when: apache.scl.name is defined
   file:
