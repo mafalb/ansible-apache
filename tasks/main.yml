@@ -1,7 +1,8 @@
 # vim: ft=yaml ts=2:
 ---
 
-- debug: var=apache
+- name: debug before OS specific variables
+  debug: var=apache
   tags:
     - never
     - debug
@@ -10,7 +11,13 @@
   include_vars:
     file: "{{ ansible_os_family }}.yml"
 
-- debug: var=apache
+- name: debug after OS specific variables
+  debug: var=apache
+  tags:
+    - never
+    - debug
+
+- debug: var=_apache_scl_tmpvar
   tags:
     - never
     - debug

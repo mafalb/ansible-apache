@@ -1,6 +1,8 @@
 # vim: set ft=yaml ts=2:
 ---
 
+apache_scl_enabled: false
+
 apache:
   scl:
     prefix: "{{ apache_scl_prefix|default('rh') }}"

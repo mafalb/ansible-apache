@@ -1,0 +1,32 @@
+# vim: set ft=yaml ts=2:
+---
+
+- name: debug apache
+  debug: var=apache
+  tags:
+    - never
+    - debug
+
+- name: symlink into /etc/profile.d
+  when: apache.scl.enabled == true
+  file:
+    src: "/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/enable"
+    dest: /etc/profile.d/{{ apache.scl.name }}.sh
+    state: link
+
+- name: symlink into /etc/profile.d
+  when: apache.scl.enabled == false
+  file:
+    path: /etc/profile.d/{{ apache.scl.name }}.sh
+    state: absent
+
+- name: directory in /etc/opt does exist
+  file:
+    path: /etc/opt/{{ apache.scl.prefix }}
+    state: directory
+
+- name: symlink into /etc/opt/{{ apache.scl.prefix }}
+  file:
+    path: /etc/opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}
+    src: /opt/{{ apache.scl.prefix }}/{{ apache.scl.name }}/root/etc/httpd/
+    state: link
