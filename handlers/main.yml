@@ -9,6 +9,10 @@
   service:
     name: "{{ apache.service }}"
     state: reloaded
+  listen:
+    - check for changed key
+    - check for changed cert
+    - check for changed chain
 
 - name: symlink into /etc/profile.d
   when:
